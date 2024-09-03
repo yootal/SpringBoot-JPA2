@@ -108,4 +108,30 @@ public class OrderRepository {
                                 " join fetch o.delivery d", Order.class)
                 .getResultList();
     }
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                        // DB distinct + 엔티티 중복 걸러서 컬렉션에 담아준다.
+                        // 일대다 fetch 단점: 페이징 불가능
+                        "select distinct o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d" +
+                                " join fetch o.orderItems oi" +
+                                " join fetch oi.item i", Order.class)
+                // 메모리에서 페이징한다. 매우 위험
+//                .setFirstResult(1)
+//                .setMaxResults(100)
+                .getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+//                        "select o from Order o" +
+//                                " join fetch o.member m" +
+//                                " join fetch o.delivery d", Order.class)
+                        "select o from Order o", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }

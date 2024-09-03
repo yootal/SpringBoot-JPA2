@@ -13,6 +13,7 @@ spring:
         format_sql: true
         naming:
           physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        default_batch_fetch_size: 100
 
   thymeleaf:
     prefix: classpath:/templates/
